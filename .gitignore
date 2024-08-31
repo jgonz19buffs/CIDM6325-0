@@ -1,8 +1,5 @@
-*answer.py
 .vscode/*
-*answer/
 __pycache__/
-*.docx
 config.py
 **/key.py
 my_env/
