@@ -3,3 +3,4 @@ __pycache__/
 config.py
 **/key.py
 my_env/
+db.sqlite3
