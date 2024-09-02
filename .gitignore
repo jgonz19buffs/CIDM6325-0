@@ -5,3 +5,4 @@ config.py
 my_env/
 db.sqlite3
 .env
+blogsite/blogsite_data.json
