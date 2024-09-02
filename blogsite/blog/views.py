@@ -121,7 +121,8 @@ def post_comment(request, post_id):
         # Create a Comment object without saving ti to the database
         comment = form.save(commit=False)
         # Assign the post to the comment
-        comment.post = post# Save the comment to the database
+        comment.post = post
+        # Save the comment to the database
         comment.save()
     return render(
         request,
