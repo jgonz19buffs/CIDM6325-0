@@ -116,6 +116,7 @@ def post_comment(request, post_id):
     )
     comment = None
     # A comment was posted
+    form = CommentForm(data=request.POST)
     if form.is_valid():
         # Create a Comment object without saving ti to the database
         comment = form.save(commit=False)
