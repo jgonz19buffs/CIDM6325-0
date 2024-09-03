@@ -3,6 +3,7 @@ from django.contrib.postgres.search import (
     SearchQuery,
     SearchRank
 )
+from django.contrib.postgres.search import TrigramSimilarity
 from django.core.mail import send_mail
 from django.core.paginator import EmptyPage, PageNotAnInteger,Paginator
 from django.db.models import Count
@@ -174,11 +175,10 @@ def post_search(request):
             search_query = SearchQuery(query, config='spanish')
             results = (
                 Post.published.annotate(
-                    search=search_vector,
-                    rank=SearchRank(search_vector, search_query)
+                    similarity=TrigramSimilarity('title', query),
                 )
-                .filter(rank__gte=0.3)
-                .order_by('-rank')
+                .filter(similarity__gt=0.1)
+                .order_by('-similarity')
             )
     
     return render(
