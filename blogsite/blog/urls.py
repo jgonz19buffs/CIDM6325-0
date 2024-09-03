@@ -22,4 +22,6 @@ urlpatterns = [
     ), 
     path('feed/', LatesPostsFeed(), name='post_feed'),
     path('search/', views.post_search, name='post_search'),
+    path('recipes/', views.recipe_list, name='recipe_list'),
+    path('recipes/<int:id>', views.recipe_detail, name='recipe_detail'),
 ]

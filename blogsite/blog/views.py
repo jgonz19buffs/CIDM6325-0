@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from taggit.models import Tag
 from .forms import CommentForm, EmailPostForm, SearchForm
-from .models import Post
+from .models import Post, Recipe
 
 # Create your views here.
 def post_list(request, tag_slug=None):
@@ -189,4 +189,25 @@ def post_search(request):
             'query': query,
             'results': results
         }
+    )
+
+def recipe_list(request):
+    recipes = Recipe.objects.all()
+    return render(
+        request,
+        'blog/recipe/list.html',
+        {'recipes': recipes}
+    )
+
+def recipe_detail(request, id):
+
+    recipe = get_object_or_404(
+        Recipe, 
+        id=id, 
+        status=Recipe.Status.PUBLISHED
+    )
+    return render(
+        request,
+        'blog/recipe/detail.html',
+        {'recipe': recipe}
     )

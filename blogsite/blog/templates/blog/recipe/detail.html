@@ -1,0 +1,14 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block content %}
+  <h1>{{ recipe.title }}</h1>
+  <p class="date">
+    Published {{ recipe.publish }} by {{ recipe.author }}
+  </p>
+  <h2>Ingredients</h2>
+  {{ recipe.ingredients|linebreaks}}
+  <h2>Instructions</h2>
+  {{ recipe.instructions|linebreaks}}
+{% endblock %}
