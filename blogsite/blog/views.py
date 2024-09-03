@@ -211,3 +211,18 @@ def recipe_detail(request, id):
         'blog/recipe/detail.html',
         {'recipe': recipe}
     )
+
+
+
+def list(request, tag_slug=None):
+    posts = Post.published.all()
+    recipes = Recipe.objects.all()
+    
+    return render(
+        request,
+        'blog/list.html',
+        {
+            'posts': posts,
+            'recipes': recipes
+        }
+    )
