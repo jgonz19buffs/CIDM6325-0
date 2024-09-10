@@ -199,12 +199,15 @@ def recipe_list(request):
         {'recipes': recipes}
     )
 
-def recipe_detail(request, id):
+def recipe_detail(request, year, month, day, recipe):
 
     recipe = get_object_or_404(
         Recipe, 
-        id=id, 
-        status=Recipe.Status.PUBLISHED
+        status=Recipe.Status.PUBLISHED, 
+        slug = recipe,
+        publish__year=year,
+        publish__month=month,
+        publish__day=day
     )
     return render(
         request,
