@@ -192,7 +192,19 @@ def post_search(request):
     )
 
 def recipe_list(request):
-    recipes = Recipe.objects.all()
+    recipe_list = Recipe.objects.all()
+    # Pagination with 3 posts per page
+    paginator = Paginator(recipe_list, 3)
+    page_number = request.GET.get('page', 1)
+    try:
+        recipes = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page_number is not an integer get the first page
+        recipes = paginator.page(1)
+    except EmptyPage:
+        # If page_number is out of range get last page of results
+        recipes = paginator.page(paginator.num_pages)
+    
     return render(
         request,
         'blog/recipe/list.html',
