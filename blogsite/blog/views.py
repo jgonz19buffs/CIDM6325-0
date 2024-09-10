@@ -191,8 +191,12 @@ def post_search(request):
         }
     )
 
-def recipe_list(request):
+def recipe_list(request,tag_slug=None):
     recipe_list = Recipe.objects.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        recipe_list = recipe_list.filter(cuisineType__in=[tag])
     # Pagination with 3 posts per page
     paginator = Paginator(recipe_list, 3)
     page_number = request.GET.get('page', 1)
@@ -208,7 +212,10 @@ def recipe_list(request):
     return render(
         request,
         'blog/recipe/list.html',
-        {'recipes': recipes}
+        {
+            'recipes': recipes,
+            'cuisineTypes':tag    
+        }
     )
 
 def recipe_detail(request, year, month, day, recipe):
@@ -227,13 +234,23 @@ def recipe_detail(request, year, month, day, recipe):
     # Form for users to comment
     form = ReviewForm()
 
+    # List of similar recipes
+    recipe_cuisineTypes_ids = recipe.cuisineType.values_list('id', flat=True)
+    similar_recipes = Recipe.objects.all().filter(
+        cuisineType__in=recipe_cuisineTypes_ids
+    ).exclude(id=recipe.id)
+    similar_recipes = similar_recipes.annotate(
+        same_cuisineTypes=Count('cuisineType')
+    ).order_by('-same_cuisineTypes', '-publish')[:4]
+
     return render(
         request,
         'blog/recipe/detail.html',
         {
             'recipe': recipe,
             'reviews': reviews,
-            'form': form
+            'form': form,
+            'similar_recipes': similar_recipes
         }
     )
 

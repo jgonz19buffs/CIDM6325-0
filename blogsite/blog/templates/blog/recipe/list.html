@@ -4,8 +4,8 @@
 
 {% block content %}
   <h1>Recipes</h1>
-  {% if tag %}
-    <h2>Recipes tagged with "{{ tag.name }}"</h2>
+  {% if cuisineType %}
+    <h2>Recipes tagged with "{{ cuisineType.name }}"</h2>
   {% endif %}
   {% for recipe in recipes %}
     <h2>
@@ -13,6 +13,15 @@
             {{ recipe.title }}
         </a>
     </h2>
+    <p class="tags">
+      Cuisine Types: 
+      {% for recipeType in recipe.cuisineTypes.all %}
+        <a href="{% url "blog:recipe_list_by_cuisineType" %}">
+          {{ cuisineType.name }}
+        </a>{% if not forloop.last %},{% endif %}
+      {% endfor %}
+      {{recipe.cuisineType.all|join:", "}}
+    </p>
     <p class="date">
         Published {{ recipe.publish }} by {{ recipe.author }}
     </p>

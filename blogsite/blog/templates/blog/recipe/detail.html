@@ -11,6 +11,16 @@
   {{ recipe.ingredients|linebreaks}}
   <h2>Instructions</h2>
   {{ recipe.instructions|linebreaks}}
+  
+  <h2>Similar recipes</h2>
+  {% for recipe in similar_recipes %}
+    <p>
+      <a href="{{ post.get_absolute_url }}">{{ recipe.title }}</a>
+    </p>
+  {% empty %}
+    There are no similar recipes yet.
+  {% endfor %}
+  
   {% with reviews.count as total_reviews %}
     <h2>
       {{ total_reviews}} review{{total_reviews|pluralize}}

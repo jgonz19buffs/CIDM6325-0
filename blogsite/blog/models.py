@@ -129,7 +129,7 @@ class Recipe(models.Model):
             ]
         )
     
-    tags = TaggableManager()
+    cuisineType = TaggableManager()
 
 class Review(models.Model):
     recipe = models.ForeignKey(

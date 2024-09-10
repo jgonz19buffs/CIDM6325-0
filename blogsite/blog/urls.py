@@ -30,4 +30,7 @@ urlpatterns = [
     path(
         '<int:recipe_id>/review', views.recipe_review, name='recipe_review'
     ),
+        path(
+        'cuisineType/<slug:tag_slug>/', views.recipe_list, name='recipe_list_by_cuisineType'
+    ), 
 ]
