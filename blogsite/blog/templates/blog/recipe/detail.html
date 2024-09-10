@@ -11,4 +11,20 @@
   {{ recipe.ingredients|linebreaks}}
   <h2>Instructions</h2>
   {{ recipe.instructions|linebreaks}}
+  {% with reviews.count as total_reviews %}
+    <h2>
+      {{ total_reviews}} review{{total_reviews|pluralize}}
+    </h2>
+  {% endwith %}
+  {% for review in reviews %}
+    <div class="comment">
+      <p class="info">
+        Review {{ forloop.counter }} by {{ review.name }}, rating: {{ review.rating }}
+      </p>
+      {{ review.body|linebreaks }}
+    </div>
+  {% empty %}
+    <p>There are no reviews.</p>
+  {% endfor %}
+  {% include "blog/recipe/includes/review_form.html" %}
 {% endblock %}

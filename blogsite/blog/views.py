@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from taggit.models import Tag
-from .forms import CommentForm, EmailPostForm, SearchForm
+from .forms import CommentForm, EmailPostForm, SearchForm, ReviewForm
 from .models import Post, Recipe
 
 # Create your views here.
@@ -221,13 +221,48 @@ def recipe_detail(request, year, month, day, recipe):
         publish__month=month,
         publish__day=day
     )
+
+    # List of active comments for this recipe
+    reviews = recipe.reviews.filter(active=True)
+    # Form for users to comment
+    form = ReviewForm()
+
     return render(
         request,
         'blog/recipe/detail.html',
-        {'recipe': recipe}
+        {
+            'recipe': recipe,
+            'reviews': reviews,
+            'form': form
+        }
     )
 
-
+@require_POST
+def recipe_review(request, recipe_id):
+    recipe = get_object_or_404(
+        Recipe,
+        id=recipe_id,
+        status=Recipe.Status.PUBLISHED
+    )
+    review = None
+    # A comment was posted
+    form = ReviewForm(data=request.POST)
+    if form.is_valid():
+        # Create a Comment object without saving ti to the database
+        review = form.save(commit=False)
+        # Assign the post to the comment
+        review.recipe = recipe
+        # Save the comment to the database
+        review.save()
+    return render(
+        request,
+        'blog/recipe/review.html',
+        {
+            'recipe' : recipe,
+            'form' : form,
+            'review' : review
+        }
+    )
 
 def list(request, tag_slug=None):
     posts = Post.published.all()

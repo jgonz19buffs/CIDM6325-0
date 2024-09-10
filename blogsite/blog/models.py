@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.core.validators import MaxValueValidator,MinValueValidator
 from taggit.managers import TaggableManager
 
 # Create your models here.
@@ -129,3 +130,22 @@ class Recipe(models.Model):
         )
     
     tags = TaggableManager()
+
+class Review(models.Model):
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+    rating = models.PositiveIntegerField(
+        validators=[
+            MaxValueValidator(10),
+            MinValueValidator(1)
+        ]
+    )

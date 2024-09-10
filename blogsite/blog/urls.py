@@ -27,4 +27,7 @@ urlpatterns = [
     path('recipes/<int:year>/<int:month>/<int:day>/<slug:recipe>',
          views.recipe_detail,
          name='recipe_detail'),
+    path(
+        '<int:recipe_id>/review', views.recipe_review, name='recipe_review'
+    ),
 ]

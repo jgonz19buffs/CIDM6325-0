@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Comment, Post, Recipe
+from .models import Comment, Post, Recipe, Review
 # Register your models here.
 
 @admin.register(Post)
@@ -29,3 +29,9 @@ class RecipeAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish'
     ordering = ['status', 'publish']
     show_facets = admin.ShowFacets.ALWAYS
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'recipe', 'created', 'active','rating']
+    list_filter = ['active', 'created', 'updated','rating']
+    search_fields = ['name', 'email', 'body']
