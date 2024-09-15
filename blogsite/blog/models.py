@@ -9,9 +9,17 @@ from taggit.managers import TaggableManager
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
-        return (
-            super().get_queryset().filter(status=Post.Status.PUBLISHED)
-        )
+        if Post:
+           return (
+                super().get_queryset().filter(status=Post.Status.PUBLISHED)
+            )
+        
+        if Recipe:
+            return(
+                super().get_queryset().filter(status=Recipe.Status.PUBLISHED)
+            )
+    
+
 
 class Post(models.Model):
     class Status(models.TextChoices):
@@ -108,6 +116,7 @@ class Recipe(models.Model):
         default=Status.DRAFT
     )
     objects = models.Manager() # The default manager.
+    published = PublishedManager() # Our custom manager.
     
     class Meta:
         ordering = ['-publish']

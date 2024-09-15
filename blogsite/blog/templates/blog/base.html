@@ -33,6 +33,20 @@
         </li>
       {% endfor %}
     </ul>
+    <p>
+      I've written {% total_recipes %} recipes so far.
+    </p>
+    <h3>Latest recipes</h3>
+    {% show_latest_recipes 3 %}
+    <h3>Most reviewed recipes</h3>
+    {% get_most_reviewed_recipes as most_reviewed_recipes %}
+    <ul>
+      {% for recipe in most_reviewed_recipes %}
+        <li>
+          <a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
   </div>
 </body>
 </html>
